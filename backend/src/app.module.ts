@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { AnimalModule } from './animal/animal.module';
+import { RescuerModule } from './rescuer/rescuer.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+    }),
+    AnimalModule,
+    RescuerModule,
+  ],
 })
 export class AppModule {}
