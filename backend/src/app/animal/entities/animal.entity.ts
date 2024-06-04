@@ -7,7 +7,7 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { Rescuer } from '../rescuer/rescuer.entity';
+import { Rescuer } from '../../rescuer/entities/rescuer.entity';
 import { Shelter } from '../shelter/shelter.entity';
 import { Veterinary } from '../veterinary/veterinary.entity';
 import { ClinicalHistory } from '../clinical-history/clinical-history.entity';
@@ -23,6 +23,12 @@ export class Animal {
   name: string;
 
   @Column()
+  height: number;
+
+  @Column()
+  weight: number;
+
+  @Column()
   age: number;
 
   @Column()
@@ -34,27 +40,36 @@ export class Animal {
   @Column('text')
   bio: string;
 
-  @Column()
+  @Column({ default: false })
   sick: boolean;
 
-  @ManyToOne(() => Rescuer, (rescuer) => rescuer.animals)
-  rescuer: Rescuer;
+  @Column({ default: false })
+  adopted: boolean;
 
-  @ManyToOne(() => Shelter, (shelter) => shelter.animals)
-  shelter: Shelter;
+  @ManyToOne(() => Rescuer, (rescuer) => rescuer.animals, { nullable: true })
+  rescuer?: Rescuer;
 
-  @ManyToOne(() => Veterinary, (veterinary) => veterinary.animals)
-  veterinary: Veterinary;
+  @ManyToOne(() => Shelter, (shelter) => shelter.animals, { nullable: true })
+  shelter?: Shelter;
 
-  @OneToOne(() => ClinicalHistory, (clinicalHistory) => clinicalHistory.animal)
+  @ManyToOne(() => Veterinary, (veterinary) => veterinary.animals, {
+    nullable: true,
+  })
+  veterinary?: Veterinary;
+
+  @OneToOne(
+    () => ClinicalHistory,
+    (clinicalHistory) => clinicalHistory.animal,
+    { nullable: true },
+  )
   @JoinColumn()
-  clinical_history: ClinicalHistory;
+  clinical_history?: ClinicalHistory;
 
-  @OneToMany(() => Adoption, (adoption) => adoption.animal)
-  adoptions: Adoption[];
+  @OneToMany(() => Adoption, (adoption) => adoption.animal, { nullable: true })
+  adoptions?: Adoption[];
 
-  @OneToMany(() => Sponsor, (sponsor) => sponsor.animal)
-  sponsors: Sponsor[];
+  @OneToMany(() => Sponsor, (sponsor) => sponsor.animal, { nullable: true })
+  sponsors?: Sponsor[];
 
   @Column({ default: 0 })
   adoption_count: number;
