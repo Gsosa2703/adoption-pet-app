@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Rescuer } from './entities/rescuer.entity';
-import { CreateRescuerInput } from './dto/create-rescuer.input.ts';
-import { UpdateRescuerInput } from './dto/update-rescuer.input.ts/index.ts';
+import { CreateRescuerInput } from './dto/create-rescuer.input';
+import { UpdateRescuerInput } from './dto/update-rescuer.input';
 
 @Injectable()
 export class RescuerService {
@@ -22,7 +22,10 @@ export class RescuerService {
   }
 
   async findOne(id: number): Promise<Rescuer> {
-    return this.rescuerRepository.findOne(id, { relations: ['animals'] });
+    return this.rescuerRepository.findOne({
+      where: { id },
+      relations: ['animals'],
+    });
   }
 
   async update(
@@ -30,7 +33,9 @@ export class RescuerService {
     updateRescuerInput: UpdateRescuerInput,
   ): Promise<Rescuer> {
     await this.rescuerRepository.update(id, updateRescuerInput);
-    return this.rescuerRepository.findOne(id);
+    return this.rescuerRepository.findOne({
+      where: { id },
+    });
   }
 
   async remove(id: number): Promise<void> {

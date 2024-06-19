@@ -1,10 +1,10 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
-import { Animal } from '../animal/animal.entity';
+import { Animal } from '../animal/entities/animal.entity';
 import { RescuerType } from './entities/rescuer.entity';
 
 registerEnumType(RescuerType, {
-  name: 'RescuerType', // this one is mandatory
-  description: 'The types of rescuers', // this one is optional
+  name: 'RescuerType',
+  description: 'The types of rescuers',
 });
 
 @ObjectType()

@@ -17,6 +17,9 @@ export class Rescuer {
   @Column()
   surname: string;
 
+  @Column()
+  contact_info: string;
+
   @Column({
     type: 'enum',
     enum: RescuerType,

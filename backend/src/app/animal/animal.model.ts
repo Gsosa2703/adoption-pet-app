@@ -1,11 +1,17 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { Rescuer } from '../rescuer/entities/rescuer.entity';
-import { Shelter } from '../shelter/shelter.entity';
-import { Veterinary } from '../veterinary/veterinary.entity';
-import { ClinicalHistory } from '../clinical-history/clinical-history.entity';
-import { Adoption } from '../adoption/adoption.entity';
-import { Sponsor } from '../sponsor/sponsor.entity';
+// import { Shelter } from '../shelter/shelter.entity';
+// import { Veterinary } from '../veterinary/veterinary.entity';
+// import { ClinicalHistory } from '../clinical-history/clinical-history.entity';
+// import { Adoption } from '../adoption/adoption.entity';
+// import { Sponsor } from '../sponsor/sponsor.entity';
 
+import { AnimalType } from './entities/animal.entity';
+
+registerEnumType(AnimalType, {
+  name: 'AnimalType',
+  description: 'The types of animals',
+});
 @ObjectType()
 export class Animal {
   @Field(() => Int)
@@ -18,10 +24,10 @@ export class Animal {
   age: number;
 
   @Field(() => Int)
-  height: number;
-
-  @Field(() => Int)
   weight: number;
+
+  @Field()
+  color: string;
 
   @Field()
   date_of_rescue: Date;
@@ -41,20 +47,23 @@ export class Animal {
   @Field(() => Rescuer)
   rescuer?: Rescuer;
 
-  @Field(() => Shelter)
-  shelter?: Shelter;
+  @Field(() => AnimalType)
+  type: AnimalType;
 
-  @Field(() => Veterinary)
-  veterinary?: Veterinary;
+  // @Field(() => Shelter)
+  // shelter?: Shelter;
 
-  @Field(() => ClinicalHistory)
-  clinical_history?: ClinicalHistory;
+  // @Field(() => Veterinary)
+  // veterinary?: Veterinary;
 
-  @Field(() => [Adoption])
-  adoptions?: Adoption[];
+  // @Field(() => ClinicalHistory)
+  // clinical_history?: ClinicalHistory;
 
-  @Field(() => [Sponsor])
-  sponsors?: Sponsor[];
+  // @Field(() => [Adoption])
+  // adoptions?: Adoption[];
+
+  // @Field(() => [Sponsor])
+  // sponsors?: Sponsor[];
 
   @Field(() => Int, { defaultValue: 0 })
   adoption_count: number;
